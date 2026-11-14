@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bijay Das - Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Social & UI Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(168, 85, 247, 0.08), transparent 30%),
+                #ffffff;
+        }
+
+        html.dark body {
+            background:
+                radial-gradient(circle at top left, rgba(96, 165, 250, 0.14), transparent 32%),
+                radial-gradient(circle at bottom right, rgba(192, 132, 252, 0.12), transparent 30%),
+                #0a0a0a;
+        }
+
+        /* Custom organic blob shape for profile image matching reference */
+        .organic-blob {
+            border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%;
+            transition: all 0.8s ease-in-out;
+        }
+        .organic-blob:hover {
+            border-radius: 50% 50% 45% 55% / 55% 45% 55% 45%;
+        }
+
+        .ambient-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(70px);
+            opacity: 0.65;
+            animation: drift 16s ease-in-out infinite alternate;
+        }
+
+        .orb-one {
+            width: 22rem;
+            height: 22rem;
+            left: -5rem;
+            top: 8rem;
+            background: rgba(59, 130, 246, 0.28);
+        }
+
+        .orb-two {
+            width: 28rem;
+            height: 28rem;
+            right: -6rem;
+            top: 16rem;
+            background: rgba(168, 85, 247, 0.18);
+            animation-delay: 2s;
+        }
+
+        .orb-three {
+            width: 18rem;
+            height: 18rem;
+            left: 35%;
+            bottom: 6rem;
+            background: rgba(14, 165, 233, 0.16);
+            animation-delay: 4s;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            100% {
+                transform: translate3d(20px, -30px, 0) scale(1.12);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-shell {
+            transform-style: preserve-3d;
+            transition: transform 0.25s ease-out, box-shadow 0.25s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100 min-h-screen flex flex-col justify-between transition-colors duration-300 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-neutral-950">
+    <div class="ambient-bg" aria-hidden="true">
+        <span class="orb orb-one"></span>
+        <span class="orb orb-two"></span>
+        <span class="orb orb-three"></span>
+    </div>
+
+    <!-- Header / Navigation Bar -->
+    <header class="w-full max-w-7xl mx-auto px-6 sm:px-12 py-6 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="#home" class="text-2xl font-bold tracking-tight hover:opacity-80 transition-opacity">
+            BD.
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+            <a href="#home" class="text-neutral-900 dark:text-white transition-colors">Home</a>
+            <a href="#about" class="hover:text-neutral-900 dark:hover:text-white transition-colors">About</a>
+            <a href="#projects" class="hover:text-neutral-900 dark:hover:text-white transition-colors">Projects</a>
+            <a href="#resume" class="hover:text-neutral-900 dark:hover:text-white transition-colors">Resume</a>
+            <a href="#contact" class="hover:text-neutral-900 dark:hover:text-white transition-colors">Contact</a>
+        </nav>
+
+        <!-- Right Side Controls (Theme Toggle & Mobile Menu Button) -->
+        <div class="flex items-center space-x-4">
+            <!-- Theme Toggle Button -->
+            <button id="theme-toggle" aria-label="Toggle Dark Mode" class="p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors focus:outline-none">
+                <!-- Moon icon for light mode -->
+                <svg id="theme-icon-dark" class="w-5 h-5 text-neutral-800 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                <!-- Sun icon for dark mode -->
+                <svg id="theme-icon-light" class="w-5 h-5 text-neutral-800 block dark:hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"></path></svg>
+            </button>
+
+            <!-- Mobile Menu Trigger -->
+            <button id="menu-btn" aria-label="Open Menu" class="md:hidden p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors focus:outline-none">
+                <i class="fa-solid fa-bars text-lg"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-20 bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 p-6 shadow-xl z-50 transition-all">
+        <nav class="flex flex-col space-y-4 text-base font-medium">
+            <a href="#home" class="mobile-link hover:text-neutral-500 transition-colors">Home</a>
+            <a href="#about" class="mobile-link hover:text-neutral-500 transition-colors">About</a>
+            <a href="#projects" class="mobile-link hover:text-neutral-500 transition-colors">Projects</a>
+            <a href="#resume" class="mobile-link hover:text-neutral-500 transition-colors">Resume</a>
+            <a href="#contact" class="mobile-link hover:text-neutral-500 transition-colors">Contact</a>
+        </nav>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow w-full max-w-7xl mx-auto px-6 sm:px-12 flex flex-col justify-center py-12 lg:py-16">
+        
+        <!-- Hero Section -->
+        <section id="home" class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center min-h-[75vh] relative z-10">
+            
+            <!-- Left Text Content -->
+            <div class="lg:col-span-7 flex flex-col items-start space-y-6 reveal">
+                <!-- Uppercase Subtitle -->
+                <div class="text-xs sm:text-sm font-semibold tracking-widest text-blue-600 dark:text-blue-400">
+                    FULL-STACK DEVELOPMENT | SYSTEMS | MACHINE LEARNING
+                </div>
+
+                <!-- Large Headline -->
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none">
+                    Hi, I'm Bijay Das.
+                </h1>
+
+                <!-- Descriptive Paragraph -->
+                <p class="text-base sm:text-lg text-neutral-600 dark:text-neutral-400 max-w-xl leading-relaxed">
+                    I'm a Computer Science & Engineering undergraduate focused on full-stack development and systems. I build with Java, JavaScript, Python, and C++.
+                </p>
+
+                <!-- Call to Action Buttons -->
+                <div class="flex flex-wrap items-center gap-4 pt-2">
+                    <a href="#resume" class="inline-flex items-center space-x-3 bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-medium px-6 py-3.5 rounded-full hover:opacity-90 transition-all shadow-md group">
+                        <span>View Resume</span>
+                        <i class="fa-solid fa-arrow-right text-sm transform group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#contact" class="inline-flex items-center justify-center border border-neutral-300 dark:border-neutral-700 font-medium px-6 py-3.5 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors">
+                        Let's Talk
+                    </a>
+                </div>
+            </div>
+
+            <!-- Profile portrait -->
+            <div class="lg:col-span-5 flex justify-center lg:justify-end reveal">
+                <div class="relative w-72 h-72 sm:w-96 sm:h-96 profile-shell">
+                    <div class="absolute inset-0 organic-blob bg-gradient-to-tr from-neutral-200 to-neutral-100 dark:from-neutral-800 dark:to-neutral-900 shadow-2xl overflow-hidden border border-neutral-200/50 dark:border-neutral-800/50">
+                        <img src="bijay-das-portrait.webp" alt="Portrait of Bijay Das" class="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-24 border-t border-neutral-100 dark:border-neutral-900 relative z-10">
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-6 reveal">About Me</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-neutral-600 dark:text-neutral-400 leading-relaxed reveal">
+                <div class="space-y-4">
+                    <p>
+                        I'm a passionate and creative individual who loves exploring new technologies, learning new skills, and turning ideas into meaningful digital experiences.
+                    </p>
+                    <p>
+                        I enjoy solving problems, taking on new challenges, and continuously improving my abilities. I'm always eager to learn, grow, and create projects that make a difference.
+                    </p>
+                </div>
+                <div class="space-y-4">
+                    <p>
+                        My goal is to combine creativity, curiosity, and technical skills to build impactful and user-friendly solutions.
+                    </p>
+                    <p><strong>Let's connect and create something amazing together!</strong></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-24 border-t border-neutral-100 dark:border-neutral-900 relative z-10">
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-8 reveal">Featured Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project Card 1 -->
+                <div class="group border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm hover:shadow-md reveal">
+                    <div class="h-48 bg-neutral-200 dark:bg-neutral-800 rounded-xl mb-4 overflow-hidden flex items-center justify-center text-neutral-400 group-hover:scale-[1.02] transition-transform duration-300">
+                        <i class="fa-solid fa-lungs text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Lung Cancer Disease Detection System</h3>
+                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">An IEEE project using computer vision and machine learning to classify pulmonary abnormalities in CT scan image datasets.</p>
+                    <div class="flex flex-wrap gap-2 text-xs font-mono">
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">Python</span>
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">OpenCV</span>
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">Scikit-learn / TensorFlow</span>
+                    </div>
+                </div>
+                <!-- Project Card 2 -->
+                <div class="group border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm hover:shadow-md reveal">
+                    <div class="h-48 bg-neutral-200 dark:bg-neutral-800 rounded-xl mb-4 overflow-hidden flex items-center justify-center text-neutral-400 group-hover:scale-[1.02] transition-transform duration-300">
+                        <i class="fa-solid fa-hospital text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Enterprise Hospital Management System</h3>
+                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">A modular desktop application for managing doctor schedules, patient admissions, medical records, and billing, backed by MySQL.</p>
+                    <div class="flex flex-wrap gap-2 text-xs font-mono">
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">Java</span>
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">JDBC</span>
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">MySQL</span>
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">Swing / AWT</span>
+                    </div>
+                </div>
+                <!-- Project Card 3 -->
+                <div class="group border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-neutral-400 dark:hover:border-neutral-600 transition-all bg-neutral-50/50 dark:bg-neutral-900/50 shadow-sm hover:shadow-md reveal">
+                    <div class="h-48 bg-neutral-200 dark:bg-neutral-800 rounded-xl mb-4 overflow-hidden flex items-center justify-center text-neutral-400 group-hover:scale-[1.02] transition-transform duration-300">
+                        <i class="fa-solid fa-building-columns text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Banking Record & Transaction Management System</h3>
+                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-4">A transaction management system for account creation, balance queries, deposits, and transfers, with input validation and transaction safeguards.</p>
+                    <div class="flex flex-wrap gap-2 text-xs font-mono">
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">Java / C++</span>
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">OOP</span>
+                        <span class="px-2.5 py-1 bg-neutral-200 dark:bg-neutral-800 rounded-md">File Handling / MySQL</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education & Skills Section -->
+        <section id="resume" class="py-24 border-t border-neutral-100 dark:border-neutral-900 relative z-10">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12 reveal">
+                <div>
+                    <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">Education & Skills</h2>
+                    <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-1">Computer Science & Engineering undergraduate | 2024–2027</p>
+                </div>
+                <a href="Bijay-Das-Resume.pdf" download class="inline-flex items-center justify-center space-x-2 border border-neutral-300 dark:border-neutral-700 text-sm font-medium px-4 py-2.5 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download CV</span>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <!-- Education & Training -->
+                <div class="lg:col-span-7 space-y-8 reveal">
+                    <div class="border-l-2 border-neutral-300 dark:border-neutral-700 pl-6 py-1 relative">
+                        <div class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-blue-600 dark:bg-blue-400"></div>
+                        <span class="text-xs font-mono text-blue-600 dark:text-blue-400">2024 — 2027</span>
+                        <h3 class="text-lg font-semibold mt-1">B.Tech in Computer Science & Engineering (Core)</h3>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400">Adamas University, Kolkata · Currently enrolled</p>
+                    </div>
+                    <div class="border-l-2 border-neutral-300 dark:border-neutral-700 pl-6 py-1 relative">
+                        <div class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-neutral-400 dark:bg-neutral-600"></div>
+                        <span class="text-xs font-mono text-blue-600 dark:text-blue-400">2020 — 2023</span>
+                        <h3 class="text-lg font-semibold mt-1">Diploma in Engineering</h3>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400">Gaighata Government Polytechnic</p>
+                    </div>
+                    <div class="border-l-2 border-neutral-300 dark:border-neutral-700 pl-6 py-1 relative">
+                        <div class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-neutral-400 dark:bg-neutral-600"></div>
+                        <span class="text-xs font-mono text-blue-600 dark:text-blue-400">JUL — AUG 2024</span>
+                        <h3 class="text-lg font-semibold mt-1">Core Java & Enterprise Development</h3>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400">QSpiders · OOP, Collections, exception handling, multithreading, and JDBC</p>
+                    </div>
+                    <div class="border-l-2 border-neutral-300 dark:border-neutral-700 pl-6 py-1 relative">
+                        <div class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-neutral-400 dark:bg-neutral-600"></div>
+                        <h3 class="text-lg font-semibold mt-1">Earlier Education</h3>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400">Higher Secondary (Class XII), Fulia Siksha Niketan · 2020</p>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400">Secondary (Class X), Fulia Siksha Niketan · 2018</p>
+                    </div>
+                </div>
+
+                <!-- Skills Breakdown -->
+                <div class="lg:col-span-5 space-y-6 bg-neutral-50 dark:bg-neutral-900/40 p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 reveal">
+                    <h3 class="text-lg font-semibold">Technical Skills</h3>
+                    <div class="space-y-4 text-sm">
+                        <p><span class="font-medium">Languages:</span> C, C++, Java, Python, JavaScript (ES6+)</p>
+                        <p><span class="font-medium">Web:</span> HTML5, CSS3, Node.js, AngularJS, REST APIs</p>
+                        <p><span class="font-medium">Databases:</span> MySQL, MongoDB</p>
+                        <p><span class="font-medium">Core:</span> Data Structures & Algorithms, OOP, Machine Learning, Image Processing</p>
+                        <p><span class="font-medium">Tools:</span> VS Code, IntelliJ IDEA, Eclipse, PyCharm, Dev-C++, Git, GitHub</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-24 border-t border-neutral-100 dark:border-neutral-900 relative z-10">
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mb-4 reveal">Let's Build Something Together</h2>
+            <p class="text-neutral-600 dark:text-neutral-400 max-w-xl mb-8 reveal">Have a project in mind or just want to say hi? Drop me a message below.</p>
+            <form id="contact-form" class="max-w-xl space-y-4 reveal">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-2">Name</label>
+                    <input type="text" required placeholder="Bijay Das" class="w-full px-4 py-3 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-2">Email</label>
+                    <input type="email" required placeholder="dasbijay46513@gmail.com" class="w-full px-4 py-3 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white transition-all">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-2">Message</label>
+                    <textarea rows="4" required placeholder="Tell me about your project..." class="w-full px-4 py-3 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white transition-all"></textarea>
+                </div>
+                <button type="submit" class="w-full sm:w-auto px-8 py-3.5 bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-medium rounded-lg hover:opacity-90 transition-opacity shadow-md">
+                    Send Message
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full max-w-7xl mx-auto px-6 sm:px-12 py-8 border-t border-neutral-100 dark:border-neutral-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-neutral-500">
+        <!-- Copyright -->
+        <p>© 2026 Bijay Das. All rights reserved.</p>
+
+        <!-- Contact & Social Links -->
+        <div class="flex items-center space-x-6 text-lg">
+            <a href="https://github.com/bijaydas019" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="hover:text-neutral-900 dark:hover:text-white transition-colors">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://linkedin.com/in/bijaydas019" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" class="hover:text-neutral-900 dark:hover:text-white transition-colors">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+            <a href="mailto:bijaydas019@hotmail.com" aria-label="Email" class="hover:text-neutral-900 dark:hover:text-white transition-colors">
+                <i class="fa-solid fa-envelope"></i>
+            </a>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript & Dark Mode Persistence -->
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+        } else {
+            htmlElement.classList.remove('dark');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        const revealItems = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            revealItems.forEach((item) => revealObserver.observe(item));
+        } else {
+            revealItems.forEach((item) => item.classList.add('revealed'));
+        }
+
+        const profileShell = document.querySelector('.profile-shell');
+        if (profileShell) {
+            profileShell.addEventListener('pointermove', (event) => {
+                const rect = profileShell.getBoundingClientRect();
+                const x = (event.clientX - rect.left) / rect.width - 0.5;
+                const y = (event.clientY - rect.top) / rect.height - 0.5;
+                profileShell.style.transform = `rotateX(${(-y * 10).toFixed(2)}deg) rotateY(${(x * 12).toFixed(2)}deg) translateY(-6px)`;
+            });
+
+            profileShell.addEventListener('pointerleave', () => {
+                profileShell.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0)';
+            });
+        }
+
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+        const sections = document.querySelectorAll('section[id]');
+
+        function setActiveLink() {
+            let currentSection = 'home';
+            sections.forEach((section) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 140) {
+                    currentSection = section.id;
+                }
+            });
+
+            navLinks.forEach((link) => {
+                const isActive = link.getAttribute('href') === `#${currentSection}`;
+                link.classList.toggle('text-neutral-900', isActive);
+                link.classList.toggle('dark:text-white', isActive);
+                link.classList.toggle('text-neutral-600', !isActive);
+                link.classList.toggle('dark:text-neutral-400', !isActive);
+            });
+        }
+
+        window.addEventListener('scroll', setActiveLink, { passive: true });
+        setActiveLink();
+
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', handleFormSubmit);
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            showNotification('Thank you! Your message has been sent successfully.');
+            e.target.reset();
+        }
+
+        function showNotification(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-6 right-6 bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 px-6 py-3 rounded-xl shadow-2xl text-sm font-medium z-50 transition-all duration-300 transform translate-y-2 opacity-0';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
